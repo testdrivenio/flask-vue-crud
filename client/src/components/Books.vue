@@ -122,7 +122,6 @@ import Alert from './Alert';
 export default {
   data() {
     return {
-      headers: ['title', 'author', 'read', 'actions'],
       books: [],
       addBookForm: {
         title: '',
@@ -203,7 +202,7 @@ export default {
       this.editForm.id = '';
       this.editForm.title = '';
       this.editForm.author = '';
-      this.editForm.read = '';
+      this.editForm.read = [];
     },
     onSubmit(evt) {
       evt.preventDefault();
@@ -239,6 +238,7 @@ export default {
       evt.preventDefault();
       this.$refs.editBookModal.hide();
       this.initForm();
+      this.getBooks(); // why?
     },
     onDeleteBook(book) {
       this.removeBook(book.id);

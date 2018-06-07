@@ -24,7 +24,8 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
     $ cd server
     $ python3.6 -m venv env
     $ source env/bin/activate
-    $ pip install -r requirements.txt
+    (env)$ pip install -r requirements.txt
+    (env)$ python app.py
     ```
 
     Navigate to [http://localhost:5000](http://localhost:5000)
