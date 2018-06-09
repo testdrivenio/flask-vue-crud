@@ -83,27 +83,27 @@
              title="Update"
              hide-footer>
       <b-form @submit="onSubmitUpdate" @reset="onResetUpdate" class="w-100">
-      <b-form-group id="form-title-group"
+      <b-form-group id="form-title-edit-group"
                     label="Title:"
-                    label-for="form-title-input">
-          <b-form-input id="form-title-input"
+                    label-for="form-title-edit-input">
+          <b-form-input id="form-title-edit-input"
                         type="text"
                         v-model="editForm.title"
                         required
                         placeholder="Enter title">
           </b-form-input>
         </b-form-group>
-        <b-form-group id="form-author-group"
+        <b-form-group id="form-author-edit-group"
                       label="Author:"
-                      label-for="form-author-input">
-            <b-form-input id="form-author-input"
+                      label-for="form-author-edit-input">
+            <b-form-input id="form-author-edit-input"
                           type="text"
                           v-model="editForm.author"
                           required
                           placeholder="Enter author">
             </b-form-input>
           </b-form-group>
-        <b-form-group id="form-read-group">
+        <b-form-group id="form-read-edit-group">
           <b-form-checkbox-group v-model="editForm.read" id="form-checks">
             <b-form-checkbox value="true">Read?</b-form-checkbox>
           </b-form-checkbox-group>
