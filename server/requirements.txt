@@ -1,3 +1,2 @@
 Flask==1.0.2
-Flask-Cors==3.0.4
-stripe==1.82.1
+Flask-Cors==3.0.7
