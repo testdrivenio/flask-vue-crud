@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Books from './components/Books.vue';
-import Ping from './components/Ping.vue';
+import Books from '../components/Books.vue';
+import Ping from '../components/Ping.vue';
 
 Vue.use(Router);
 

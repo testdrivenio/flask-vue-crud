@@ -1,5 +1,4 @@
 import uuid
-
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -25,6 +24,7 @@ BOOKS = [
     }
 ]
 
+
 # configuration
 DEBUG = True
 
@@ -36,18 +36,18 @@ app.config.from_object(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 
+# sanity check route
+@app.route('/ping', methods=['GET'])
+def ping_pong():
+    return jsonify('pong!')
+
+
 def remove_book(book_id):
     for book in BOOKS:
         if book['id'] == book_id:
             BOOKS.remove(book)
             return True
     return False
-
-
-# sanity check route
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('pong!')
 
 
 @app.route('/books', methods=['GET', 'POST'])
