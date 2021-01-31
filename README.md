@@ -12,7 +12,7 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
 
     ```sh
     $ cd server
-    $ python3.7 -m venv env
+    $ python3.9 -m venv env
     $ source env/bin/activate
     (env)$ pip install -r requirements.txt
     (env)$ python app.py
