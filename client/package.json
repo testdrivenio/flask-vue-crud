@@ -13,7 +13,9 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+    "vue-good-table": "^2.21.11",
     "vue-router": "^3.2.0",
+    "vue-taggable-select": "^1.0.1",
     "vue2-dropzone": "^3.6.0"
   },
   "devDependencies": {

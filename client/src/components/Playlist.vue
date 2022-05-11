@@ -5,7 +5,8 @@
       <div class="col-3">
         Mode de reproducció
         <div style="">
-                <b-form-select :options="options" style="margin-left:1%; width: 150px;" v-model="selected"
+                <b-form-select :options="options" style="margin-left:1%; width: 150px;"
+                               v-model="selected"
                                v-on:change="changeMode"></b-form-select>
                 <span style="display:inline-block; width:560px;" v-if="!fileIsChoosen"></span>
                 <span style="display:inline-block; width:460px;" v-if="fileIsChoosen"></span>
@@ -20,7 +21,8 @@
       <div class="row">
         <div class="col-3">
           <b>Playlists disponibles:</b>
-          <div style="cursor: pointer" v-for="item in playlists" v-bind:key="item" @click="updatePlaylist(item)">
+          <div style="cursor: pointer" v-for="item in playlists"
+               v-bind:key="item" @click="updatePlaylist(item)">
             - {{ item.name }}
           </div>
         </div>
@@ -35,7 +37,8 @@
         ofLabel: 'de',
         pageLabel: 'pàgina', // for 'pages' mode
         allLabel: 'Tots',}" :rows="files" :search-options="{enabled: true}"
-                              :selected="enabled" @on-row-click="onRowClick" max-height="300px" style="color: #0032ce;">
+                              :selected="enabled"
+                              @on-row-click="onRowClick" max-height="300px" style="color: #0032ce;">
                 <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field === 'duration'">
           <span v-if="props.row.duration !== null">{{props.row.duration/1000}}</span>
@@ -46,39 +49,44 @@
                 </template>
               </vue-good-table>
             </div>
-            <div style="width: 90%; margin: auto; margin-left:1%"
-                 v-if="selected === 'rndm' || selected == 'rndm-inter'">
-              <vue-good-table :columns="columnsRandom" :pagination-options="{enabled: true, perPage: 25,
-        nextLabel: 'Següent',
-        prevLabel: 'Anterior',
-        rowsPerPageLabel: 'elements per pàgina',
-        ofLabel: 'de',
-        pageLabel: 'pàgina', // for 'pages' mode
-        allLabel: 'Tots',}" :rows="files" :search-options="{enabled: true}"
-                              :selected="enabled" @on-row-click="onRowClick" max-height="300px" style="color: #0032ce;">
+            <div style="width: 90%; margin: auto auto auto 1%;"
+                 v-if="selected === 'rndm' || selected === 'rndm-inter'">
+              <vue-good-table :columns="columnsRandom"
+                              :pagination-options="{enabled: true, perPage: 25,
+                              nextLabel: 'Següent',
+                              prevLabel: 'Anterior',
+                              rowsPerPageLabel: 'elements per pàgina',
+                              ofLabel: 'de',
+                              pageLabel: 'pàgina', // for 'pages' mode
+                              allLabel: 'Tots',}" :rows="files" :search-options="{enabled: true}"
+                              :selected="enabled" @on-row-click="onRowClick"
+                              max-height="300px" style="color: #0032ce;">
                 <template slot="table-row" slot-scope="props">
-          <span v-if="props.column.field == 'duration'">
+          <span v-if="props.column.field === 'duration'">
           <span v-if="props.row.duration !== null">{{props.row.duration/1000}}</span>
           </span>
-                  <span v-if="props.column.field == 'played'">
+                  <span v-if="props.column.field === 'played'">
           <span v-if="props.row.played === 1">{{"Si"}}</span>
           <span v-if="props.row.played === 0">{{"En Cua"}}</span>
           </span>
-                  <span v-if="props.column.field !== 'duration' && props.column.field !== 'played' ">
-            {{props.formattedRow[props.column.field]}}
+                  <span v-if="props.column.field !== 'duration'
+                  && props.column.field !== 'played' ">
+            {{ props.formattedRow[props.column.field] }}
           </span>
                 </template>
               </vue-good-table>
             </div>
             <div>
               <span style="display:inline-block; width:50px;"></span>
-              <b-img alt="Image 1" fluid height="200" thumbnail v-bind:src=imageSource v-if="fileIsChoosen"
+              <b-img alt="Image 1" fluid height="200" thumbnail
+                     v-bind:src=imageSource v-if="fileIsChoosen"
                      width="300"></b-img>
             </div>
           </div>
           <div class="row">
         <div class="col">
-           <b-button @click="removeAllFiles" v-if="files.length" variant="danger">Buidar la llista</b-button>
+           <b-button @click="removeAllFiles" v-if="files.length" variant="danger">
+             Buidar la llista</b-button>
         </div>
         <div class="col">
           <b-button v-b-modal.modal-center>Guardar Playlist</b-button>
@@ -122,15 +130,18 @@
               v-if="fileIsChoosen && (selected !== 'inter' && selected !== 'rndm-inter')"></span>
         <span style="display:inline-block; width:150px;"
               v-if="fileIsChoosen && (selected === 'inter' || selected !== 'rndm-inter')"></span>
-        <b-button @click="removeFile" v-if="fileIsChoosen" variant="danger">Esborrar de la llista</b-button>
+        <b-button @click="removeFile" v-if="fileIsChoosen" variant="danger">
+          Esborrar de la llista</b-button>
         <span style="display:inline-block; width:35px;"></span>
-        <b-button @click="playNext" v-b-modal="addToPlayList-modal" v-if="fileIsChoosen" variant="outline-primary">
+        <b-button @click="playNext" v-b-modal="addToPlayList-modal"
+                  v-if="fileIsChoosen" variant="outline-primary">
           Reproduir després
         </b-button>
         <span style="display:inline-block; width:50px;"></span>
         <b-button @click="setIntercalated"
                   v-b-modal="addToPlayList-modal"
-                  v-if="fileIsChoosen && (selected == 'inter' || selected == 'rndm-inter')" variant="outline-primary">
+                  v-if="fileIsChoosen && (selected === 'inter' || selected === 'rndm-inter')"
+                  variant="outline-primary">
           Seleccionar com a
           fitxer intercalat
         </b-button>
@@ -142,13 +153,11 @@
 </template>
 
 <script>
+/* eslint-disable no-alert, no-console */
 import axios from 'axios';
 
 export default {
   name: 'Playlist',
-  /*
-          Defines the data used by the component
-        */
   created() {
     this.getFiles();
     this.getTags();
@@ -162,6 +171,7 @@ export default {
   },
   data() {
     return {
+      enabled: false,
       videosType: ['.mp4', '.mkv', '.m4v', '.flv', '.webm', '.ogg'],
       previousRow: '',
       timer: '',
@@ -169,7 +179,7 @@ export default {
       seenContent: true,
       fileIsChoosen: false,
       intercalatedFile: '',
-      imageSource: 'nule',
+      imageSource: null,
       urlRPI: 'http://127.0.0.1:80/content',
       selectedFileName: 0,
       duration: 0,
@@ -224,7 +234,7 @@ export default {
       console.log('path:');
       console.log(path);
       this.imageSource = `/thumbnail/${path}`;
-      console.log(this.imageSource);
+      // console.log(this.imageSource);
     },
     playNext() {
       const fileName = this.selectedFileName;
@@ -237,6 +247,7 @@ export default {
         if (inputDuration === null) {
           inputDuration = 0;
         }
+        // eslint-disable-next-line radix
         this.setNext(fileName, parseInt(inputDuration), 'Image');
       }
     },
@@ -251,6 +262,7 @@ export default {
         if (inputDuration === null) {
           inputDuration = 0;
         }
+        // eslint-disable-next-line radix
         this.setIntercalatedAXIOS(fileName, parseInt(inputDuration), 'Image');
       }
     },
@@ -268,6 +280,7 @@ export default {
         alert(res.data.message);
       })
         .catch((error) => {
+          // eslint-disable-next-line no-alert
           alert(error.response.data.message);
         });
     },
@@ -289,7 +302,7 @@ export default {
           alert(error.response.data.message);
         });
     },
-    handleOk(bvModalEvt) {
+    handleOk() {
       // Trigger submit handler
       console.log(this.tags);
       this.savePlaylist();
@@ -327,7 +340,7 @@ export default {
       let i = 0;
       this.removeIntercalatedREQUEST();
       this.intercalatedFile = 'default.mp4';
-      for (i; i < this.files.length; i++) {
+      for (i; i < this.files.length; i += 1) {
         this.removeFileREQUEST(this.files[i].name);
       }
       setTimeout(() => this.getFiles(), 2000);
@@ -340,7 +353,7 @@ export default {
         this.removeIntercalatedREQUEST();
         this.intercalatedFile = 'default.mp4';
       }
-      const path = `${'http://127.0.0.1:8000/playlistEntry' + '/'}${fName}`;
+      const path = `${'http://127.0.0.1:8000/playlistEntry/'}${fName}`;
       axios.delete(path, { auth: { username: this.$route.query.token } })
         .then((res) => {
           console.log(res);
@@ -351,7 +364,7 @@ export default {
           alert(error.response.data.message);
         });
     },
-    removeIntercalatedREQUEST(fName) {
+    removeIntercalatedREQUEST() {
       const path = 'http://127.0.0.1:8000/intercalatedEntry';
       axios.delete(path, { auth: { username: this.$route.query.token } })
         .then((res) => {
@@ -365,6 +378,7 @@ export default {
       this.imageSource = `/thumbnail/${params.row.name}`;
       this.selectedFileName = params.row.name;
       this.fileIsChoosen = true;
+      // eslint-disable-next-line no-param-reassign
       params.event.target.parentElement.bgColor = '#f1f5fd';
       if (this.previousRow === '') {
         this.previousRow = params;
@@ -398,7 +412,7 @@ export default {
       axios.get(path, { auth: { username: this.$route.query.token } })
         .then((res) => {
           console.log(res.data.tags);
-          for (let i = 0; i < res.data.tags.length; i++) {
+          for (let i = 0; i < res.data.tags.length; i += 1) {
             console.log(res.data.tags[i]);
             this.tags.push(res.data.tags[i].name);
           }
@@ -505,6 +519,7 @@ export default {
     },
     updatePlaylist(name) {
       console.log(name);
+      console.log(this.playlists);
     },
     getPlaylists() {
       axios({
@@ -513,10 +528,11 @@ export default {
         auth: { username: this.$route.query.token },
       }).then((res) => {
         console.log(res.data.playlists);
-        for (let i = 0; i < res.data.playlists.length; i++) {
+        for (let i = 0; i < res.data.playlists.length; i += 1) {
           console.log(res.data.playlists[i]);
           this.playlists.push(res.data.playlists[i]);
         }
+        console.log(res.data.playlists);
       })
         .catch((error) => {
           alert(error.response.data.message);
@@ -525,4 +541,5 @@ export default {
   },
 
 };
+/* eslint-enable no-alert, no-console */
 </script>

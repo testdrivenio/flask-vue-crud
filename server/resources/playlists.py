@@ -1,7 +1,8 @@
 from flask import Flask, make_response, request
 
-from models.playlist_names import PlaylistsModel
-from resources.nextByMode import *
+from server.models.playlist_names import PlaylistsModel
+from server.resources.nextByMode import *
+import json
 
 class PlaylistsList(Resource):
     #TODO @auth.login_required(role='admin')

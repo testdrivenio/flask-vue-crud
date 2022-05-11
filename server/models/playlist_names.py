@@ -26,7 +26,8 @@ class PlaylistsModel(db.Model):
 
     def json(self):
         return json.loads(json.dumps
-                          (self, default=lambda o: {'id': self.id, 'name': self.name}))
+                          (self, default=lambda o: {'id': self.id, 'name': self.name, 'items': json.dumps(self.items),
+                                                    'tags': json.dumps(self.tags)}))
 
     def save_to_db(self):
         try:
