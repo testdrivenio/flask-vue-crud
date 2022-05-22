@@ -21,10 +21,17 @@
       <div class="row">
         <div class="col-3">
           <b>Playlists disponibles:</b>
-          <div style="cursor: pointer" v-for="item in playlists"
+          <b-list-group class="list-group">
+            <b-list-group-item v-for="item in playlists" :key="item"
+              class="list-group-item"
+              @click="updatePlaylist(item)">
+              {{ item.name }}
+            </b-list-group-item>
+          </b-list-group>
+          <!--<div style="cursor: pointer" v-for="item in playlists"
                v-bind:key="item" @click="updatePlaylist(item)">
             - {{ item.name }}
-          </div>
+          </div>-->
         </div>
         <div class="col-9">
           <div style="">
@@ -388,8 +395,6 @@ export default {
       }
     },
     getFiles() {
-      // this.selectedFileName = ''
-      // this.fileIsChoosen = false
       if (Object.keys(this.$route.query.token).length !== 0) {
         const path = 'http://127.0.0.1:80/playlist';
         axios.get(path, { auth: { username: this.$route.query.token } })
@@ -517,9 +522,18 @@ export default {
       this.seenContent = !this.seenContent;
       this.getFiles();
     },
-    updatePlaylist(name) {
-      console.log(name);
-      console.log(this.playlists);
+    updatePlaylist(playlist) {
+      console.log(this.items);
+      // const obj = arr.find(({ data }) => data === name);
+      // console.log(obj);
+      /* for (let i = 0; i < this.playlists.length; i += 1) {
+        if (this.playlists[i].name === playlist.name) {
+          console.log(this.playlists[i]);
+        }
+      } */
+      console.log('hola');
+      this.items = playlist.items;
+      console.log(this.items);
     },
     getPlaylists() {
       axios({
@@ -543,3 +557,11 @@ export default {
 };
 /* eslint-enable no-alert, no-console */
 </script>
+<style scoped>
+  .list-group{
+    max-height: 75%;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+    cursor: pointer;
+  }
+</style>

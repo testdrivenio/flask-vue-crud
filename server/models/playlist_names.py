@@ -27,6 +27,8 @@ class PlaylistsModel(db.Model):
         self.name = name
 
     def json(self):
+        print(self.items)
+        print(self.tags)
         return json.loads(json.dumps
                           (self, default=lambda o: {'id': self.id, 'name': self.name,
                                                     'items': json.dumps([o.json() for o in self.items]),

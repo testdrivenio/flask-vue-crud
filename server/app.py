@@ -13,14 +13,10 @@ from checktype import *
 from db import db, secret_key
 from resources.mode import Mode
 from resources.playlist import Playlist
-from resources.playlists import PlaylistsList
+from resources.playlists import PlaylistsList, Playlists
 from resources.items import Items, ItemsList
 from resources.tags import Tags, TagsList
 
-
-
-
-# configuration
 DEBUG = True
 
 # instantiate the app
@@ -51,6 +47,7 @@ api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
 api.add_resource(Login, '/login')
 api.add_resource(Playlist, '/playlist/<string:name>', '/playlist')
+api.add_resource(Playlists, '/playlists/<string:name>', '/savePlaylist')
 api.add_resource(PlaylistsList, '/playlistslist')
 api.add_resource(ItemsList, '/items')
 api.add_resource(Items, '/item')

@@ -27,3 +27,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 server/data.db
+*.db
