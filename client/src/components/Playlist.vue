@@ -524,7 +524,7 @@ export default {
     getPlaylists() {
       axios({
         method: 'get',
-        url: 'http://127.0.0.1:80/playlists',
+        url: 'http://127.0.0.1:80/playlistslist',
         auth: { username: this.$route.query.token },
       }).then((res) => {
         console.log(res.data.playlists);

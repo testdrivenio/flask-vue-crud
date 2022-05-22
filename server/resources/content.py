@@ -80,7 +80,7 @@ class Content(Resource):
             return {'message': m}, 404
         return {'message': response}, 200
 
-    @auth.login_required()
+    # @auth.login_required()
     def get(self):
         content = ContentModel.query.all()
         container_content = []

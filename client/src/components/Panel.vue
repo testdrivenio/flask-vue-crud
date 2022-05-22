@@ -14,6 +14,9 @@
       <b-tab title="Mode de Manteniment">
         <SwitchStatus></SwitchStatus>
       </b-tab>
+      <b-tab title="Configuració Raspberry">
+        <Raspberry></Raspberry>
+      </b-tab>
       <b-tab title="Tancar la sessió">
         <LogOut></LogOut>
       </b-tab>
@@ -32,10 +35,12 @@ import Login from './Login.vue';
 import LogOut from './LogOut.vue';
 import SignUp from './SignUp.vue';
 import SwitchStatus from './SwitchStatus.vue';
+import Raspberry from "./Raspberry";
 
 export default {
   name: 'Panel',
   components: {
+    Raspberry,
     Content,
     Playlist,
     Login,

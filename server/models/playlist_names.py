@@ -1,6 +1,8 @@
 from db import db
 import json
 
+from flask import jsonify
+
 playlist_items = db.Table('playlist_items',
     db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
     db.Column('item_id', db.Integer, db.ForeignKey('items.id'), primary_key=True)
@@ -26,8 +28,9 @@ class PlaylistsModel(db.Model):
 
     def json(self):
         return json.loads(json.dumps
-                          (self, default=lambda o: {'id': self.id, 'name': self.name, 'items': json.dumps(self.items),
-                                                    'tags': json.dumps(self.tags)}))
+                          (self, default=lambda o: {'id': self.id, 'name': self.name,
+                                                    'items': json.dumps([o.json() for o in self.items]),
+                                                    'tags': json.dumps([o.json() for o in self.tags])}))
 
     def save_to_db(self):
         try:
