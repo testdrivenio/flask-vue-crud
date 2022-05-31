@@ -18,9 +18,10 @@ class Playlists(Resource):
             parser = reqparse.RequestParser()  # create parameters parser from request
 
             # define al input parameters need and its type
-            parser.add_argument('name', type=str, required=True, help="This field cannot be left blanck")
-            parser.add_argument('items', type=str, required=True, help="This field cannot be left blanck")
-            parser.add_argument('tags', type=str)
+            parser.add_argument('name', type=str, required=True, help="This field cannot be left blank")
+            parser.add_argument('items', type=dict, required=True, location='json',
+                                help="This field cannot be left blank")
+            parser.add_argument('tags', type=str, action="append", required=False)
 
             dades = parser.parse_args()
 
@@ -28,12 +29,16 @@ class Playlists(Resource):
                 return {'message': "Playlist amb ['nom': {} ] ja existeix".format(dades['nom'])}, 409
             else:
                 new_playlist = PlaylistsModel(name=dades['name'])
-                # TODO: add items and tags and create relation
+                # TODO: add items and tags and create relation. Need to create a loop
+                # tag = TagsModel(name='pat')
+                # new_item = ItemsModel(name='hola1', duration=90, type='Image')
+                # new_playlist.items.append(new_item)
+                # new_playlist.tags.append(new_tags)
                 new_playlist.save_to_db()
                 return {'playlist': new_playlist.json()}, 200
 
         except:
-            return {'message': "Ha hagut un problema amb la petició"}, 400
+            return {'message': "Hi ha hagut un problema amb la petició"}, 400
 
         return {'message': "Petició processada correctament"}, 200
 

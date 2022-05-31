@@ -1,7 +1,7 @@
 from flask import Flask, make_response, request
-
-from models.items import ItemsModel
 from resources.nextByMode import *
+
+from server.models.items import ItemsModel
 
 
 class Items(Resource):
@@ -19,6 +19,8 @@ class Items(Resource):
                             help="Duration not valid: 'duration' not provided")
         parser.add_argument('played', type=int, required=True,
                             help="Played not valid: 'played' not provided")
+        parser.add_argument('playlist_name', type=str, required=False,  # TODO: change required to True
+                            help="Playlist_name not valid: 'playlist_name' not provided")
         dades = parser.parse_args()
         chck = checkType(dades['name'])
         duration = None
@@ -32,13 +34,15 @@ class Items(Resource):
 
         try:
             item = ItemsModel(name=dades['name'], duration=duration, type=dades['type'])
+            # TODO: Create relation between item and playlist
             item.save_to_db()
         except Exception as e:
             return {'message': "Error guardant a la base de dades"}, 400
         return {'message': "Item amb nom" + dades['name'] + " guardat correctament"}, 200
 
+
 class ItemsList(Resource):
-    #TODO @auth.login_required(role='admin')
+    # TODO @auth.login_required(role='admin')
     def get(self):
         plts = ItemsModel.retrieveAllEntries()
 
@@ -46,4 +50,4 @@ class ItemsList(Resource):
         for a in plts:
             container_items.append(a.json())
 
-        return {'items': container_items},200
+        return {'items': container_items}, 200

@@ -531,7 +531,6 @@ export default {
           console.log(this.playlists[i]);
         }
       } */
-      console.log('hola');
       this.items = playlist.items;
       console.log(this.items);
     },

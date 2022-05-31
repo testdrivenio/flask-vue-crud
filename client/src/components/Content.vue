@@ -158,6 +158,26 @@ export default {
       }
     },
     addToPlaylistPOST(fname, fduration, ftype) {
+      // Save in playlist Controller
+      axios({
+        method: 'post',
+        url: 'http://127.0.0.1:80/item',
+        data: {
+          name: fname,
+          playlist_name: "playlist1",
+          duration: fduration,
+          priority: 1,
+          type: ftype,
+          played: 1
+        },
+        auth: { username: this.$route.query.token },
+      }).then((res) => {
+        alert(res.data.message);
+      })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
+      // Save in playlist Billboard
       axios({
         method: 'post',
         url: 'http://127.0.0.1:8000/playlistEntry',

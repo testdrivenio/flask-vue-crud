@@ -11,6 +11,9 @@ class Tags(Resource):
         # define al input parameters need and its type
         parser.add_argument('name', type=str, required=True,
                             help="Name  not valid: 'name' not provided")
+        parser.add_argument('playlist_name', type=str, required=False,  # TODO: change required to True
+                            help="Playlist_name not valid: 'playlist_name' not provided")
+
         dades = parser.parse_args()
         try:
             print(dades['name'])

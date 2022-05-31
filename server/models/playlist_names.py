@@ -4,24 +4,26 @@ import json
 from flask import jsonify
 
 playlist_items = db.Table('playlist_items',
-    db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
-    db.Column('item_id', db.Integer, db.ForeignKey('items.id'), primary_key=True)
-)
+                          db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
+                          db.Column('item_id', db.Integer, db.ForeignKey('items.id'), primary_key=True)
+                          )
 
 playlist_tags = db.Table('playlist_tags',
-    db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
-    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True)
-)
+                         db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
+                         db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+                         )
+
 
 class PlaylistsModel(db.Model):
     __tablename__ = 'playlist_names'  # This is table name
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, db.ForeignKey('content.name'), unique=True, nullable=False)
     tags = db.relationship('TagsModel',
-                    secondary=playlist_tags)
+                           secondary=playlist_tags)
     items = db.relationship('ItemsModel',
-                           secondary=playlist_items)
+                            secondary=playlist_items)
 
     def __init__(self, name):
         self.name = name

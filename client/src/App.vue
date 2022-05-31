@@ -20,7 +20,7 @@
     <h1>Gestió de la cartellera</h1>
     <router-view/>
     <v-footer>
-      <img src="../static/logo_ub(1).png" width="300" height="100">
+      <img src="../static/logo_ub.png" width="300" height="100">
       <span style="display:inline-block; width:1080px;"></span>
       <img src="../static/crai_logo_unatinta_blanc.png" width="300" height="100">
     </v-footer>
