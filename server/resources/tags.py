@@ -16,7 +16,7 @@ class Tags(Resource):
 
         dades = parser.parse_args()
         try:
-            print(dades['name'])
+            # print(dades['name'])
             tag = TagsModel(name=dades['name'])
             tag.save_to_db()
         except Exception as e:

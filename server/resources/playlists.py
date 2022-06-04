@@ -1,9 +1,7 @@
 from flask_restful import Resource, reqparse
 from models.playlist_names import PlaylistsModel
 from models.tags import TagsModel
-
-
-# from server.models.playlist_names import PlaylistsModel
+from models.items import ItemsModel
 
 
 class Playlists(Resource):
@@ -22,7 +20,7 @@ class Playlists(Resource):
 
             # define al input parameters need and its type
             parser.add_argument('name', type=str, required=True, help="This field cannot be left blank")
-            parser.add_argument('items', type=dict, required=True, location='json',
+            parser.add_argument('items', type=list, required=True, location='json',
                                 help="This field cannot be left blank")
             parser.add_argument('tags', type=str, action="append", required=False)
 
@@ -34,12 +32,18 @@ class Playlists(Resource):
                 new_playlist = PlaylistsModel(dades['name'])
                 # TODO: add items and tags and create relation. Need to create a loop
                 for tag in dades['tags']:
-                    tag = TagsModel.find_by_name(name=tag)
-                    if tag is None:
-                        tag = TagsModel(name=tag)
-                    new_playlist.tags.append(tag)
+                    new_tag = TagsModel.find_by_name(name=tag)
+                    if new_tag is None:
+                        new_tag = TagsModel(name=tag)
+                    new_playlist.tags.append(new_tag)
+                for item in dades['items']:
+                    print(item)
+                    new_item = ItemsModel.find_by_name(name=item['name'])
+                    if new_item is None:
+                        new_item = ItemsModel(name=item['name'],
+                                              duration=item['duration'], type=item['type'])
+                    new_playlist.items.append(new_item)
 
-                # new_item = ItemsModel(name='hola1', duration=90, type='Image')
                 # new_playlist.items.append(new_item)
                 # new_playlist.tags.append(tag)
                 new_playlist.save_to_db()
