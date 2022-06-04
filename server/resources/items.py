@@ -1,9 +1,6 @@
 from flask import Flask, make_response, request
 from resources.nextByMode import *
 
-from server.models.items import ItemsModel
-
-
 class Items(Resource):
     # TODO @auth.login_required()
     def post(self):

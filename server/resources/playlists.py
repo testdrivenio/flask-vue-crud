@@ -1,6 +1,9 @@
-from server.models.playlist_names import PlaylistsModel
-from server.resources.nextByMode import *
-import json
+from flask_restful import Resource, reqparse
+from models.playlist_names import PlaylistsModel
+from models.tags import TagsModel
+
+
+# from server.models.playlist_names import PlaylistsModel
 
 
 class Playlists(Resource):
@@ -26,21 +29,26 @@ class Playlists(Resource):
             dades = parser.parse_args()
 
             if PlaylistsModel.find_by_name(dades['name']):
-                return {'message': "Playlist amb ['nom': {} ] ja existeix".format(dades['nom'])}, 409
+                return {'message': "Playlist amb ['nom': {} ] ja existeix".format(dades['name'])}, 409
             else:
-                new_playlist = PlaylistsModel(name=dades['name'])
+                new_playlist = PlaylistsModel(dades['name'])
                 # TODO: add items and tags and create relation. Need to create a loop
-                # tag = TagsModel(name='pat')
+                for tag in dades['tags']:
+                    tag = TagsModel.find_by_name(name=tag)
+                    if tag is None:
+                        tag = TagsModel(name=tag)
+                    new_playlist.tags.append(tag)
+
                 # new_item = ItemsModel(name='hola1', duration=90, type='Image')
                 # new_playlist.items.append(new_item)
-                # new_playlist.tags.append(new_tags)
+                # new_playlist.tags.append(tag)
                 new_playlist.save_to_db()
                 return {'playlist': new_playlist.json()}, 200
 
         except:
             return {'message': "Hi ha hagut un problema amb la petició"}, 400
 
-        return {'message': "Petició processada correctament"}, 200
+        # return {'message': "Petició processada correctament"}, 200
 
 
 class PlaylistsList(Resource):

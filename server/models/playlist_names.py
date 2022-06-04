@@ -3,10 +3,10 @@ import json
 
 from flask import jsonify
 
-playlist_items = db.Table('playlist_items',
-                          db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
-                          db.Column('item_id', db.Integer, db.ForeignKey('items.id'), primary_key=True)
-                          )
+# playlist_items = db.Table('playlist_items',
+#                           db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
+#                           db.Column('item_id', db.Integer, db.ForeignKey('items.id'), primary_key=True)
+#                           )
 
 playlist_tags = db.Table('playlist_tags',
                          db.Column('playlist_id', db.Integer, db.ForeignKey('playlist_names.id'), primary_key=True),
@@ -22,19 +22,17 @@ class PlaylistsModel(db.Model):
     name = db.Column(db.String, db.ForeignKey('content.name'), unique=True, nullable=False)
     tags = db.relationship('TagsModel',
                            secondary=playlist_tags)
-    items = db.relationship('ItemsModel',
-                            secondary=playlist_items)
+    #items = db.relationship('ItemsModel',
+                            #secondary=playlist_items)
 
     def __init__(self, name):
         self.name = name
 
     def json(self):
-        print(self.items)
-        print(self.tags)
         return json.loads(json.dumps
                           (self, default=lambda o: {'id': self.id, 'name': self.name,
-                                                    'items': json.dumps([o.json() for o in self.items]),
-                                                    'tags': json.dumps([o.json() for o in self.tags])}))
+                                                    # 'items': json.dumps([o.json() for o in self.items]),
+                                                    'tags': [tag.json() for tag in self.tags]}))
 
     def save_to_db(self):
         try:
@@ -58,7 +56,10 @@ class PlaylistsModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        return PlaylistsModel.query.filter_by(name=name).first()
+        try:
+            return PlaylistsModel.query.filter_by(name=name).first()
+        except:
+             raise Exception("There was a problem finding the username")
 
     @classmethod
     def delete_by_name(cls, name):
