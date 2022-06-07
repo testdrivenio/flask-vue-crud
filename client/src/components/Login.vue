@@ -1,25 +1,27 @@
 <template>
   <div id="login">
-    <div id="loginDiv" style="padding:15px; border-radius:6px; display: inline-block; width:400px;">
-    <br>
-    <h5 style="font-weight: bold;color: #0072ce;">Inicia sessió</h5>
-    <br>
-    <div class="form-label-group">
-      <label  style="display: flex; margin-bottom: .5rem;color: #0072ce;">Nom d'usuari:</label>
-      <input type="username" id="inputUsername"
-             class="form-control" placeholder="Nom d'usuari" required v-model="username">
+    <div id="loginDiv">
+
+    <h4 style="font-weight: bold;color: #0072ce;">Inicia sessió</h4>
+
+    <div class="form-group row">
+      <label class="col-sm-12 col-form-label" style="text-align: left">Nom d'usuari:</label>
+      <div class="col-sm-12">
+        <input type="username" id="inputUsername"
+               class="form-control" placeholder="Nom d'usuari" required v-model="username">
+      </div>
     </div>
 
-    <div class="form-label-group">
+    <div class="form-group row">
       <br>
       <br>
-      <label for="inputPassword" style="display: flex; margin-bottom: .5rem;color: #0072ce;">
-        Contrasenya:</label>
-      <input type="password" id="inputPassword"
-             class="form-control" placeholder="Contrasenya" required v-model="password">
+      <label for="inputPassword" class="col-sm-12 col-form-label" style="text-align: left"> Contrasenya:</label>
+      <div class="col-sm-12">
+        <input type="password" id="inputPassword" class="form-control" placeholder="Contrasenya" required v-model="password">
+      </div>
     </div>
     <br>
-    <div style="margin:0 auto;">
+    <div>
       <br>
       <b-button style="width: 40%;" @click="checkLogin"
                 variant="outline-primary">Iniciar Sessió</b-button>

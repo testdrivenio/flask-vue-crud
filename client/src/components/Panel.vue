@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="container" style="width:1995px; background-color:white; color:#0072ce; border-radius: 6px;  margin-top: 2%; padding-right: 0px; padding-left: 0px;" v-if="logged">
+  <div class="container" style=" background-color:white; color:#0072ce; border-radius: 6px;  margin-top: 2%; padding-right: 0px; padding-left: 0px;" v-if="logged">
     <b-tabs content-class="mt-3">
       <b-tab title="Contingut">
         <Content></Content>
@@ -22,7 +22,7 @@
       </b-tab>
     </b-tabs>
   </div>
-  <div class="container" style="width:495px; background-color:white; color:#0072ce; border-radius: 6px;  margin-top: 2%; padding-right: 0px; padding-left: 0px;" v-if="!logged" >
+  <div class="container" style="background-color:white; color:#0072ce; border-radius: 6px; padding: 5%" v-if="!logged" >
     <Login></Login>
   </div>
 </div>

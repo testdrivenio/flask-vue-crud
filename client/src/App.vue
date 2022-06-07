@@ -1,8 +1,7 @@
 <template>
   <div id="app" style="height:983px;">
     <div align="left">
-      <b-button style="color:white;" variant="link"
-                @click="showAbout" >Sobre aquesta aplicació</b-button>
+
       <b-modal id="about-modal" hide-footer>
         <label style="display: flex; margin-bottom: .5rem;color: #0072ce;">
           Projecte desenvolupat com a Treball de Final de Grau d'Enginyeria Informàtica
@@ -17,12 +16,24 @@
       </b-modal>
     </div>
     <br>
-    <h1>Gestió de la cartellera</h1>
+    <h1 style="margin-top: 3%">Gestió de la cartellera</h1>
     <router-view/>
     <v-footer>
-      <img src="../static/logo_ub.png" width="300" height="100">
-      <span style="display:inline-block; width:1080px;"></span>
-      <img src="../static/crai_logo_unatinta_blanc.png" width="300" height="100">
+      <div class="container">
+          <div class="row">
+            <div class="col-md-4 col-sm-12">
+              <img src="../static/logo_ub.png" width="300" height="100">
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <b-button style="color:white;width:300px; height:100px" variant="link"
+                    @click="showAbout" >Sobre aquesta aplicació</b-button>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <img src="../static/crai_logo_unatinta_blanc.png" width="300" height="100">
+            </div>
+          </div>
+      </div>
+
     </v-footer>
   </div>
 </template>
