@@ -22,10 +22,11 @@
         <div class="col-3">
           <b>Playlists disponibles:</b>
           <b-list-group class="list-group">
-            <b-list-group-item v-for="item in playlists" :key="item"
+            <b-list-group-item v-for="item in playlists"
               class="list-group-item"
               @click="updatePlaylist(item)">
               {{ item.name }}
+              <p>{{ item.tags }} </p>
             </b-list-group-item>
           </b-list-group>
           <!--<div style="cursor: pointer" v-for="item in playlists"
@@ -103,7 +104,7 @@
       </div>
         <br>
         <div>
-          <b-modal @hidden="resetModal" @ok="handleOk"
+          <b-modal @hidden="resetModal" @ok="handleOk(tagsPlaylist)"
                    @show="resetModal"
                    centered
                    id="modal-center"
@@ -114,7 +115,7 @@
               label="Com vols anomenar aquesta playlist?"
               label-for="input-1"
             >
-              <b-form-input id="input-1" v-model="playlist_name"></b-form-input>
+              <b-form-input id="input-1" v-model="new_playlist_name"></b-form-input>
             </b-form-group>
             <b-form-group
               class="my-4"
@@ -123,7 +124,7 @@
               label-for="input-2"
             >
                 <vue-taggable-select
-                v-model="tags"
+                v-model="tagsPlaylist"
                 placeholder="Introdueix tags"
                 :taggable="true"
                 :options="tags"
@@ -144,6 +145,9 @@
                   v-if="fileIsChoosen" variant="outline-primary">
           Reproduir després
         </b-button>
+        <b-button @click="setupPlaylist" variant="outline-primary">
+        Reproduir llista
+      </b-button>
         <span style="display:inline-block; width:50px;"></span>
         <b-button @click="setIntercalated"
                   v-b-modal="addToPlayList-modal"
@@ -166,12 +170,11 @@ import axios from 'axios';
 export default {
   name: 'Playlist',
   created() {
-    this.getFiles();
+    // this.getFiles();
     this.getTags();
-    this.timer = setInterval(this.getFiles, 1000);
-    this.mode = this.getMode();
-    this.intercalatedFile = this.getIntercalatedFile();
-    this.getPlaylists();
+    this.mode = this.getMode()
+    this.intercalatedFile = this.getIntercalatedFile()
+    this.getPlaylists()
   },
   destroy() {
     clearInterval(this.timer);
@@ -224,15 +227,16 @@ export default {
           field: 'played',
         },
       ],
-      selected: null,
+      selected: 'seq',
       options: [
         { value: null, text: 'Seqüencial' },
         { value: 'inter', text: 'Intercalat' },
         { value: 'rndm', text: 'Aleatori' },
         { value: 'rndm-inter', text: 'Aleatori-Intercalat' },
       ],
-      playlist_name: '',
+      new_playlist_name: '',
       tags: [],
+      tagsPlaylist: [],
       playlists: [],
     };
   },
@@ -309,10 +313,10 @@ export default {
           alert(error.response.data.message);
         });
     },
-    handleOk() {
+    handleOk(tagsPlaylist) {
       // Trigger submit handler
-      console.log(this.tags);
-      this.savePlaylist();
+      console.log(tagsPlaylist);
+      this.savePlaylist(tagsPlaylist);
       this.$nextTick(() => {
         this.$bvModal.hide('modal-prevent-closing');
       });
@@ -321,19 +325,20 @@ export default {
     resetModal() {
       this.name = '';
     },
-    savePlaylist() {
-      console.log(this.files);
+    savePlaylist(tagsPlaylist) {
+      // console.log(this.files)
+      // console.log(tagsPlaylist)
       axios({
         method: 'post',
         url: 'http://127.0.0.1:80/savePlaylist',
         data: {
-          playlist_name: this.playlist_name,
-          files: this.files,
-          tags: this.tags,
+          name: this.new_playlist_name,
+          items: this.files,
+          tags: tagsPlaylist,
         },
         auth: { username: this.$route.query.token },
       }).then((res) => {
-        alert(res.data.message);
+        alert("Afegida la playlist " + res.data.playlist.name);
       })
         .catch((error) => {
           alert(error.response.data.message);
@@ -520,10 +525,12 @@ export default {
     },
     methodUpload() {
       this.seenContent = !this.seenContent;
-      this.getFiles();
+      // this.getFiles();
     },
     updatePlaylist(playlist) {
-      console.log(this.items);
+      console.log(playlist);
+      this.files = playlist.items
+      this.playlist_name = playlist.name
       // const obj = arr.find(({ data }) => data === name);
       // console.log(obj);
       /* for (let i = 0; i < this.playlists.length; i += 1) {
@@ -531,26 +538,62 @@ export default {
           console.log(this.playlists[i]);
         }
       } */
-      this.items = playlist.items;
-      console.log(this.items);
     },
     getPlaylists() {
+      if (Object.keys(this.$route.query.token).length !== 0) {
+        axios({
+          method: 'get',
+          url: 'http://127.0.0.1:80/playlistslist',
+          auth: {username: this.$route.query.token},
+        }).then((res) => {
+          for (let i = 0; i < res.data.playlists.length; i += 1) {
+            console.log(res.data.playlists[i]);
+            this.playlists.push(res.data.playlists[i]);
+          }
+          if (this.playlists.length > 0) {
+            // console.log(this.playlists[0].items)
+            this.files = this.playlists[0].items
+            this.playlist_name = this.playlists[0].name
+          }
+          console.log(res.data.playlists);
+        })
+          .catch((error) => {
+            alert(error.response.data.message);
+            if (error.response.data.message === 'La sessió ha caducat, inicia sessió de nou') {
+              alert('La sessió ha caducat. Introdueix les teves credencials un altre cop');
+              this.$router.replace({path: '/'});
+              this.$root.$emit('login', false);
+              clearInterval(this.timer);
+            }
+          });
+      }
+    },
+    setupPlaylist() {
+      let mode = 'seq'
+      console.log(this.name)
+      if (this.selected != null) {
+        mode = this.selected
+      }
       axios({
-        method: 'get',
-        url: 'http://127.0.0.1:80/playlistslist',
+        method: 'post',
+        url: 'http://127.0.0.1:8000/setPlaylist',
+        data: {
+          name: this.playlist_name,
+          items: this.files,
+          mode: mode,
+          status: this.status
+        },
         auth: { username: this.$route.query.token },
       }).then((res) => {
-        console.log(res.data.playlists);
-        for (let i = 0; i < res.data.playlists.length; i += 1) {
-          console.log(res.data.playlists[i]);
-          this.playlists.push(res.data.playlists[i]);
-        }
-        console.log(res.data.playlists);
+        alert(res.data.message);
       })
         .catch((error) => {
+          // eslint-disable-next-line no-alert
           alert(error.response.data.message);
         });
-    },
+      console.log("sending playlist to billboard")
+
+    }
   },
 
 };

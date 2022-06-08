@@ -29,12 +29,10 @@ class PlaylistsModel(db.Model):
         self.name = name
 
     def json(self):
-        print(self.items)
-        print(self.tags)
         return json.loads(json.dumps
                           (self, default=lambda o: {'id': self.id, 'name': self.name,
-                                                    'items': json.dumps([o.json() for o in self.items]),
-                                                    'tags': json.dumps([o.json() for o in self.tags])}))
+                                                    'items': [item.json() for item in self.items],
+                                                    'tags': [tag.json() for tag in self.tags]}))
 
     def save_to_db(self):
         try:
@@ -58,7 +56,10 @@ class PlaylistsModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        return PlaylistsModel.query.filter_by(name=name).first()
+        try:
+            return PlaylistsModel.query.filter_by(name=name).first()
+        except:
+             raise Exception("There was a problem finding the username")
 
     @classmethod
     def delete_by_name(cls, name):

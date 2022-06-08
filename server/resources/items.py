@@ -1,8 +1,7 @@
 from flask import Flask, make_response, request
+
+from models.items import ItemsModel
 from resources.nextByMode import *
-
-from server.models.items import ItemsModel
-
 
 class Items(Resource):
     # TODO @auth.login_required()
@@ -34,7 +33,6 @@ class Items(Resource):
 
         try:
             item = ItemsModel(name=dades['name'], duration=duration, type=dades['type'])
-            # TODO: Create relation between item and playlist
             item.save_to_db()
         except Exception as e:
             return {'message': "Error guardant a la base de dades"}, 400

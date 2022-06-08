@@ -25,8 +25,8 @@ class ItemsModel(db.Model):
         return json.loads(json.dumps(self, default=lambda o: {'id': self.id, 'name': self.name, 'type': self.type,
                                                               'priority': self.priority, 'duration': self.duration,
                                                               'path': self.path, 'played': self.played}))
-    def json(self):
-        return json.loads(json.dumps(self, default=lambda o: {'id': self.id, 'name': self.name}))
+    # def json(self):
+        # return json.loads(json.dumps(self, default=lambda o: {'id': self.id, 'name': self.name}))
 
     def save_to_db(self):
         try:
