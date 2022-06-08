@@ -30,12 +30,13 @@ class Playlists(Resource):
                 return {'message': "Playlist amb ['nom': {} ] ja existeix".format(dades['name'])}, 409
             else:
                 new_playlist = PlaylistsModel(dades['name'])
-                # TODO: add items and tags and create relation. Need to create a loop
+                # Add tags to the playlist
                 for tag in dades['tags']:
                     new_tag = TagsModel.find_by_name(name=tag)
                     if new_tag is None:
                         new_tag = TagsModel(name=tag)
                     new_playlist.tags.append(new_tag)
+                # Add items to the playlist
                 for item in dades['items']:
                     print(item)
                     new_item = ItemsModel.find_by_name(name=item['name'])
@@ -43,9 +44,6 @@ class Playlists(Resource):
                         new_item = ItemsModel(name=item['name'],
                                               duration=item['duration'], type=item['type'])
                     new_playlist.items.append(new_item)
-
-                # new_playlist.items.append(new_item)
-                # new_playlist.tags.append(tag)
                 new_playlist.save_to_db()
                 return {'playlist': new_playlist.json()}, 200
 
@@ -61,8 +59,6 @@ class PlaylistsList(Resource):
         plts = PlaylistsModel.retrieveAllEntries()
         container_playlists = []
         for a in plts:
-            print(a)
-            print(type(a))
             container_playlists.append(a.json())
 
         return {'playlists': container_playlists}, 200
