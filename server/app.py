@@ -1,9 +1,11 @@
+#importing necessary libraries
 import uuid
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 
-BOOKS = [
+#hardcoded dataset
+BOOKS = [ 
     {
         'id': uuid.uuid4().hex,
         'title': 'On the Road',
@@ -42,7 +44,7 @@ def ping_pong():
     return jsonify('pong!')
 
 
-def remove_book(book_id):
+def remove_book(book_id):      #delete book record with the help of id
     for book in BOOKS:
         if book['id'] == book_id:
             BOOKS.remove(book)
@@ -50,7 +52,7 @@ def remove_book(book_id):
     return False
 
 
-@app.route('/books', methods=['GET', 'POST'])
+@app.route('/books', methods=['GET', 'POST'])         #adding book data (create)
 def all_books():
     response_object = {'status': 'success'}
     if request.method == 'POST':
@@ -67,10 +69,10 @@ def all_books():
     return jsonify(response_object)
 
 
-@app.route('/books/<book_id>', methods=['PUT', 'DELETE'])
+@app.route('/books/<book_id>', methods=['PUT', 'DELETE'])   
 def single_book(book_id):
     response_object = {'status': 'success'}
-    if request.method == 'PUT':
+    if request.method == 'PUT':                 #update book data 
         post_data = request.get_json()
         remove_book(book_id)
         BOOKS.append({
